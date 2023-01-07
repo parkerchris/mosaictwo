@@ -14,9 +14,11 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
 
-  const { data } = useSession();
+  const { data: session } = useSession();
 
-  console.log("here is data", data)
+  console.log("here is data", session)
+
+  const reloadSession = () => {}
 
   return (
     <>
@@ -73,7 +75,7 @@ export default function Home() {
         {/* /////////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
         <div>
           <h4>Welcome to Mosaic</h4>
-          <div>{data?.user ? <Application/> : <Auth/>}</div>
+          <div>{session?.user.userType ? <Application/> : <Auth session={session} reloadSession={reloadSession}/>}</div>
         </div>
         
         {/* /////////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
