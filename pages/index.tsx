@@ -1,9 +1,13 @@
+
+import { NextPageContext } from "next" 
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import styles from '../styles/Home.module.css'
-import { signIn, useSession, signOut } from "next-auth/react"
+import { signIn, useSession, signOut, getSession } from "next-auth/react"
 import { createSemanticDiagnosticsBuilderProgram } from 'typescript'
+import Auth from "../components/Auth"
+import Application from "../components/Application"
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -68,15 +72,8 @@ export default function Home() {
         </div>
         {/* /////////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
         <div>
-        <h4>Welcome to Mosaic</h4>
-          {data?.user ? (
-              <div>
-                <p>{data?.user?.name}</p>
-                <button onClick={() => signOut()}>Sign Out</button>
-              </div>
-            ) : (
-              <button onClick={() => signIn('google')}>Sign in</button>
-            )}
+          <h4>Welcome to Mosaic</h4>
+          <div>{data?.user ? <Application/> : <Auth/>}</div>
         </div>
         
         {/* /////////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
@@ -141,4 +138,17 @@ export default function Home() {
       </main>
     </>
   )
+};
+
+export async function getServerSideProps(context: NextPageContext) {
+  const session = await getSession(context);
+
+  return {
+    props: {
+      session,
+    }
+  }
+
 }
+
+
