@@ -2,10 +2,18 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import styles from '../styles/Home.module.css'
+import { signIn, useSession, signOut } from "next-auth/react"
+import { createSemanticDiagnosticsBuilderProgram } from 'typescript'
+
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+
+  const { data } = useSession();
+
+  console.log("here is data", data)
+
   return (
     <>
       <Head>
@@ -58,7 +66,20 @@ export default function Home() {
             />
           </div>
         </div>
-
+        {/* /////////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
+        <div>
+        <h4>Welcome to Mosaic</h4>
+          {data?.user ? (
+              <div>
+                <p>{data?.user?.name}</p>
+                <button onClick={() => signOut()}>Sign Out</button>
+              </div>
+            ) : (
+              <button onClick={() => signIn('google')}>Sign in</button>
+            )}
+        </div>
+        
+        {/* /////////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
         <div className={styles.grid}>
           <a
             href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
